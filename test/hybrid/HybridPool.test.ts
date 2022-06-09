@@ -62,7 +62,11 @@ describe("Router", function () {
       [addresses[0], addresses[1], 30, 200000]
     );
 
-    pool = await Pool.attach((await (await masterDeployer.deployPool(tridentPoolFactory.address, deployData)).wait()).events[0].args[1]);
+    pool = await Pool.attach(
+      (
+        await (await masterDeployer.deployPool(tridentPoolFactory.address, deployData)).wait()
+      ).events[0].args[1]
+    );
 
     addresses = [dai.address, usdc.address].sort();
     const deployData2 = ethers.utils.defaultAbiCoder.encode(
@@ -84,7 +88,9 @@ describe("Router", function () {
       await bento.transfer(weth.address, alice.address, pool.address, amount);
       await bento.transfer(usdc.address, alice.address, pool.address, amount);
 
-      await expect(pool.mint(aliceEncoded)).to.emit(pool, "Mint").withArgs(alice.address, amount, amount, alice.address, expectedLiquidity);
+      await expect(pool.mint(aliceEncoded))
+        .to.emit(pool, "Mint")
+        .withArgs(alice.address, amount, amount, alice.address, expectedLiquidity);
       expect(await pool.totalSupply()).gt(1);
       await bento.transfer(dai.address, alice.address, daiUsdcPool.address, amount);
       await bento.transfer(usdc.address, alice.address, daiUsdcPool.address, amount);
@@ -309,22 +315,6 @@ describe("Router", function () {
 
       await router.exactInputSingleWithNativeToken(params);
       expect(await bento.balanceOf(weth.address, pool.address)).gt(oldPoolWethBalance);
-    });
-
-    it("Should burn liquidity for single token", async function () {
-      await pool.approve(router.address, BigNumber.from(10).pow(20));
-      let initialLiquidity = await pool.balanceOf(alice.address);
-
-      let liquidity = BigNumber.from(10).pow(10);
-
-      const burnData = ethers.utils.defaultAbiCoder.encode(["address", "address", "bool"], [weth.address, alice.address, true]);
-
-      let burnLiquidityPromise = router.burnLiquiditySingle(pool.address, liquidity, burnData, 1);
-
-      let finalLiquidity = await pool.balanceOf(alice.address);
-
-      await expect(burnLiquidityPromise).to.emit(pool, "Burn");
-      expect(finalLiquidity).eq(initialLiquidity.sub(liquidity));
     });
   });
 });
