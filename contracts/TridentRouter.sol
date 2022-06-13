@@ -44,7 +44,7 @@ contract TridentRouter is ITridentRouter, SelfPermit, Multicall {
         bento = _bento;
         masterDeployer = _masterDeployer;
         wETH = _wETH;
-        _bento.registerProtocol();
+        //        _bento.registerProtocol();
     }
 
     receive() external payable {
