@@ -194,15 +194,10 @@ describe("HybridPool Typescript == Solidity check", function () {
       it(`Test ${mintNum + 1}`, async function () {
         const [poolRouterInfo, pool] = await createHybridPool(200_000, 0.003, 19, 19);
 
-        console.log("haha");
-
         // test regular values
         for (let swapNum = 0; swapNum < 3; ++swapNum) {
           await checkSwap(pool, poolRouterInfo, 17);
         }
-
-        console.log("kaka");
-
         // test small values
         for (let swapNum = 0; swapNum < 3; ++swapNum) {
           await checkSwap(pool, poolRouterInfo, 2);
