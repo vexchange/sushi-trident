@@ -188,108 +188,112 @@ describe("HybridPool Typescript == Solidity check", function () {
     ).equals(true, "values not close enough");
     swapDirection = !swapDirection;
   }
-
-  describe("Check regular liquidity values", function () {
-    for (let mintNum = 0; mintNum < 3; ++mintNum) {
-      it(`Test ${mintNum + 1}`, async function () {
-        const [poolRouterInfo, pool] = await createHybridPool(200_000, 0.003, 19, 19);
-
-        // test regular values
-        for (let swapNum = 0; swapNum < 3; ++swapNum) {
-          await checkSwap(pool, poolRouterInfo, 17);
-        }
-        // test small values
-        for (let swapNum = 0; swapNum < 3; ++swapNum) {
-          await checkSwap(pool, poolRouterInfo, 2);
-        }
-        //test big values 2^112 = 10^33.7153
-        for (let swapNum = 0; swapNum < 3; ++swapNum) {
-          await checkSwap(pool, poolRouterInfo, 23);
-        }
-        await checkSwap(pool, poolRouterInfo, 33);
-      });
-    }
-  });
-
-  describe("Check supersmall liquidity values", function () {
-    for (let mintNum = 0; mintNum < 3; ++mintNum) {
-      it(`Test ${mintNum + 1}`, async function () {
-        const [poolRouterInfo, pool] = await createHybridPool(200_000, 0.003, 4, 4);
-
-        // test small values
-        for (let swapNum = 0; swapNum < 5; ++swapNum) {
-          await checkSwap(pool, poolRouterInfo, 3);
-        }
-        await checkSwap(pool, poolRouterInfo, 7);
-      });
-    }
-  });
-
-  describe("Check superbig liquidity values", function () {
-    for (let mintNum = 0; mintNum < 3; ++mintNum) {
-      it(`Test ${mintNum + 1}`, async function () {
-        const [poolRouterInfo, pool] = await createHybridPool(200_000, 0.003, 33, 33);
-
-        // test regular values
-        for (let swapNum = 0; swapNum < 3; ++swapNum) {
-          await checkSwap(pool, poolRouterInfo, 17);
-        }
-        // test small values
-        for (let swapNum = 0; swapNum < 3; ++swapNum) {
-          await checkSwap(pool, poolRouterInfo, 2);
-        }
-        //test extremely big values 2^112 = 10^33.7153
-        for (let swapNum = 0; swapNum < 3; ++swapNum) {
-          await checkSwap(pool, poolRouterInfo, 33);
-        }
-      });
-    }
-  });
-
-  describe("Check different fees", function () {
-    for (let mintNum = 0; mintNum < 3; ++mintNum) {
-      const fee = (mintNum + 1) / 1000;
-      it(`fee = ${fee}`, async function () {
-        const [poolRouterInfo, pool] = await createHybridPool(200_000, fee, 19, 19);
-
-        // test regular values
-        for (let swapNum = 0; swapNum < 3; ++swapNum) {
-          await checkSwap(pool, poolRouterInfo, 17);
-        }
-        // test small values
-        for (let swapNum = 0; swapNum < 3; ++swapNum) {
-          await checkSwap(pool, poolRouterInfo, 2);
-        }
-        //test extremely big values 2^112 = 10^33.7153
-        for (let swapNum = 0; swapNum < 3; ++swapNum) {
-          await checkSwap(pool, poolRouterInfo, 25);
-        }
-        await checkSwap(pool, poolRouterInfo, 33);
-      });
-    }
-  });
-
-  describe("Check different A", function () {
-    const Avariants = [100, 450, 1000, 6000, 30_000, 100_000, 1000_000];
-    for (let i = 0; i < Avariants.length; ++i) {
-      const A = Avariants[i];
-      it(`A = ${A}`, async function () {
-        const [poolRouterInfo, pool] = await createHybridPool(A, 0.003, 19, 19);
-
-        // test regular values
-        for (let swapNum = 0; swapNum < 2; ++swapNum) {
-          await checkSwap(pool, poolRouterInfo, 17);
-        }
-        // test small values
-        for (let swapNum = 0; swapNum < 2; ++swapNum) {
-          await checkSwap(pool, poolRouterInfo, 2);
-        }
-        //test extremely big values 2^112 = 10^33.7153
-        for (let swapNum = 0; swapNum < 2; ++swapNum) {
-          await checkSwap(pool, poolRouterInfo, 24);
-        }
-        await checkSwap(pool, poolRouterInfo, 33);
-      });
-    }
-  });
+  /**
+   * TODO: the following tests are commented out because they depend on the router which depends
+   * on BentoBox. They should be imported or re-written in the native forge tests when the factory and stableswap
+   * architecture are stable
+   */
+  // describe("Check regular liquidity values", function () {
+  //   for (let mintNum = 0; mintNum < 3; ++mintNum) {
+  //     it(`Test ${mintNum + 1}`, async function () {
+  //       const [poolRouterInfo, pool] = await createHybridPool(200_000, 0.003, 19, 19);
+  //
+  //       // test regular values
+  //       for (let swapNum = 0; swapNum < 3; ++swapNum) {
+  //         await checkSwap(pool, poolRouterInfo, 17);
+  //       }
+  //       // test small values
+  //       for (let swapNum = 0; swapNum < 3; ++swapNum) {
+  //         await checkSwap(pool, poolRouterInfo, 2);
+  //       }
+  //       //test big values 2^112 = 10^33.7153
+  //       for (let swapNum = 0; swapNum < 3; ++swapNum) {
+  //         await checkSwap(pool, poolRouterInfo, 23);
+  //       }
+  //       await checkSwap(pool, poolRouterInfo, 33);
+  //     });
+  //   }
+  // });
+  //
+  // describe("Check supersmall liquidity values", function () {
+  //   for (let mintNum = 0; mintNum < 3; ++mintNum) {
+  //     it(`Test ${mintNum + 1}`, async function () {
+  //       const [poolRouterInfo, pool] = await createHybridPool(200_000, 0.003, 4, 4);
+  //
+  //       // test small values
+  //       for (let swapNum = 0; swapNum < 5; ++swapNum) {
+  //         await checkSwap(pool, poolRouterInfo, 3);
+  //       }
+  //       await checkSwap(pool, poolRouterInfo, 7);
+  //     });
+  //   }
+  // });
+  //
+  // describe("Check superbig liquidity values", function () {
+  //   for (let mintNum = 0; mintNum < 3; ++mintNum) {
+  //     it(`Test ${mintNum + 1}`, async function () {
+  //       const [poolRouterInfo, pool] = await createHybridPool(200_000, 0.003, 33, 33);
+  //
+  //       // test regular values
+  //       for (let swapNum = 0; swapNum < 3; ++swapNum) {
+  //         await checkSwap(pool, poolRouterInfo, 17);
+  //       }
+  //       // test small values
+  //       for (let swapNum = 0; swapNum < 3; ++swapNum) {
+  //         await checkSwap(pool, poolRouterInfo, 2);
+  //       }
+  //       //test extremely big values 2^112 = 10^33.7153
+  //       for (let swapNum = 0; swapNum < 3; ++swapNum) {
+  //         await checkSwap(pool, poolRouterInfo, 33);
+  //       }
+  //     });
+  //   }
+  // });
+  //
+  // describe("Check different fees", function () {
+  //   for (let mintNum = 0; mintNum < 3; ++mintNum) {
+  //     const fee = (mintNum + 1) / 1000;
+  //     it(`fee = ${fee}`, async function () {
+  //       const [poolRouterInfo, pool] = await createHybridPool(200_000, fee, 19, 19);
+  //
+  //       // test regular values
+  //       for (let swapNum = 0; swapNum < 3; ++swapNum) {
+  //         await checkSwap(pool, poolRouterInfo, 17);
+  //       }
+  //       // test small values
+  //       for (let swapNum = 0; swapNum < 3; ++swapNum) {
+  //         await checkSwap(pool, poolRouterInfo, 2);
+  //       }
+  //       //test extremely big values 2^112 = 10^33.7153
+  //       for (let swapNum = 0; swapNum < 3; ++swapNum) {
+  //         await checkSwap(pool, poolRouterInfo, 25);
+  //       }
+  //       await checkSwap(pool, poolRouterInfo, 33);
+  //     });
+  //   }
+  // });
+  //
+  // describe("Check different A", function () {
+  //   const Avariants = [100, 450, 1000, 6000, 30_000, 100_000, 1000_000];
+  //   for (let i = 0; i < Avariants.length; ++i) {
+  //     const A = Avariants[i];
+  //     it(`A = ${A}`, async function () {
+  //       const [poolRouterInfo, pool] = await createHybridPool(A, 0.003, 19, 19);
+  //
+  //       // test regular values
+  //       for (let swapNum = 0; swapNum < 2; ++swapNum) {
+  //         await checkSwap(pool, poolRouterInfo, 17);
+  //       }
+  //       // test small values
+  //       for (let swapNum = 0; swapNum < 2; ++swapNum) {
+  //         await checkSwap(pool, poolRouterInfo, 2);
+  //       }
+  //       //test extremely big values 2^112 = 10^33.7153
+  //       for (let swapNum = 0; swapNum < 2; ++swapNum) {
+  //         await checkSwap(pool, poolRouterInfo, 24);
+  //       }
+  //       await checkSwap(pool, poolRouterInfo, 33);
+  //     });
+  //   }
+  // });
 });

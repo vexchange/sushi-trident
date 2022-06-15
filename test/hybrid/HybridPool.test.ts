@@ -16,11 +16,10 @@ describe("Router", function () {
     const PoolFactory = await ethers.getContractFactory("HybridPoolFactory");
     const SwapRouter = await ethers.getContractFactory("TridentRouter");
     const Pool = await ethers.getContractFactory("HybridPool");
+    const mockBento = "0x0000000000000000000000000000000000000001";
     weth = await ERC20.deploy("WETH", "WETH", getBigNumber("10000000"));
     usdc = await ERC20.deploy("USDC", "USDC", getBigNumber("10000000"));
     dai = await ERC20.deploy("DAI", "DAI", getBigNumber("10000000"));
-
-    const mockBento = "0x0000000000000000000000000000000000000001";
 
     masterDeployer = await Deployer.deploy(17, feeTo.address, mockBento);
     await masterDeployer.deployed();
@@ -84,7 +83,11 @@ describe("Router", function () {
         .to.emit(daiUsdcPool, "Mint")
         .withArgs(alice.address, amount, amount, alice.address, expectedLiquidity);
     });
-
+    /**
+     * TODO: the following tests are commented out because they depend on the router which depends
+     * on BentoBox. They should be imported or re-written in the native forge tests when the factory and stableswap
+     * architecture are stable
+     */
     // it("Should add liquidity", async function () {
     //   let initialTotalSupply = await pool.totalSupply();
     //   let initialPoolWethBalance = await weth.balanceOf(pool.address);
