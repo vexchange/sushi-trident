@@ -21,12 +21,12 @@ describe("Router", function () {
     usdc = await ERC20.deploy("USDC", "USDC", getBigNumber("10000000"));
     dai = await ERC20.deploy("DAI", "DAI", getBigNumber("10000000"));
 
-    masterDeployer = await Deployer.deploy(17, feeTo.address, mockBento);
+    masterDeployer = await Deployer.deploy(17, feeTo.address, nullBento);
     await masterDeployer.deployed();
 
     tridentPoolFactory = await PoolFactory.deploy(masterDeployer.address);
     await tridentPoolFactory.deployed();
-    router = await SwapRouter.deploy(mockBento, masterDeployer.address, weth.address);
+    router = await SwapRouter.deploy(nullBento, masterDeployer.address, weth.address);
     await router.deployed();
     // Whitelist pool factory in master deployer
     await masterDeployer.addToWhitelist(tridentPoolFactory.address);
