@@ -16,7 +16,7 @@ describe("Router", function () {
     const PoolFactory = await ethers.getContractFactory("HybridPoolFactory");
     const SwapRouter = await ethers.getContractFactory("TridentRouter");
     const Pool = await ethers.getContractFactory("HybridPool");
-    const mockBento = "0x0000000000000000000000000000000000000001";
+    const nullBento = "0x0000000000000000000000000000000000000001";
     weth = await ERC20.deploy("WETH", "WETH", getBigNumber("10000000"));
     usdc = await ERC20.deploy("USDC", "USDC", getBigNumber("10000000"));
     dai = await ERC20.deploy("DAI", "DAI", getBigNumber("10000000"));
