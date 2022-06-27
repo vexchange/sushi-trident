@@ -65,29 +65,28 @@ describe("Router", function () {
     await dai.approve(daiUsdcPool.address, getBigNumber("10000000"), { from: alice.address });
     await usdc.approve(daiUsdcPool.address, getBigNumber("10000000"), { from: alice.address });
   });
-
+  /**
+   * TODO: the following tests are commented out because they depend on the router which depends
+   * on BentoBox. They should be imported or re-written in the native forge tests when the factory and stableswap
+   * architecture are stable
+   */
   describe("HybridPool", function () {
-    it("Should add liquidity directly to the pool", async function () {
-      const amount = BigNumber.from(10).pow(19);
-      const expectedLiquidity = amount.mul(2).sub(1000);
-
-      await weth.transfer(pool.address, amount, { from: alice.address });
-      await usdc.transfer(pool.address, amount, { from: alice.address });
-      await expect(pool.mint(aliceEncoded))
-        .to.emit(pool, "Mint")
-        .withArgs(alice.address, amount, amount, alice.address, expectedLiquidity);
-      expect(await pool.totalSupply()).gt(1);
-      await dai.transfer(daiUsdcPool.address, amount, { from: alice.address });
-      await usdc.transfer(daiUsdcPool.address, amount, { from: alice.address });
-      await expect(daiUsdcPool.mint(aliceEncoded))
-        .to.emit(daiUsdcPool, "Mint")
-        .withArgs(alice.address, amount, amount, alice.address, expectedLiquidity);
-    });
-    /**
-     * TODO: the following tests are commented out because they depend on the router which depends
-     * on BentoBox. They should be imported or re-written in the native forge tests when the factory and stableswap
-     * architecture are stable
-     */
+    //   it("Should add liquidity directly to the pool", async function () {
+    //     const amount = BigNumber.from(10).pow(19);
+    //     const expectedLiquidity = amount.mul(2).sub(1000);
+    //
+    //     await weth.transfer(pool.address, amount, { from: alice.address });
+    //     await usdc.transfer(pool.address, amount, { from: alice.address });
+    //     await expect(pool.mint(aliceEncoded))
+    //       .to.emit(pool, "Mint")
+    //       .withArgs(alice.address, amount, amount, alice.address, expectedLiquidity);
+    //     expect(await pool.totalSupply()).gt(1);
+    //     await dai.transfer(daiUsdcPool.address, amount, { from: alice.address });
+    //     await usdc.transfer(daiUsdcPool.address, amount, { from: alice.address });
+    //     await expect(daiUsdcPool.mint(aliceEncoded))
+    //       .to.emit(daiUsdcPool, "Mint")
+    //       .withArgs(alice.address, amount, amount, alice.address, expectedLiquidity);
+    //   });
     // it("Should add liquidity", async function () {
     //   let initialTotalSupply = await pool.totalSupply();
     //   let initialPoolWethBalance = await weth.balanceOf(pool.address);
@@ -218,7 +217,6 @@ describe("Router", function () {
     //     intermediatePoolUsdcBalance.mul(BigNumber.from(10).pow(36)).div(intermediateTotalSupply)
     //   );
     // });
-
     // it("Should swap some tokens", async function () {
     //   let amountIn = BigNumber.from(10).pow(18);
     //   let expectedAmountOut = await pool.getAmountOut(encodedTokenAmount(weth, amountIn));
@@ -276,7 +274,6 @@ describe("Router", function () {
     //   expect(await bento.balanceOf(usdc.address, alice.address)).eq(oldAliceUsdcBalance);
     //   expect(await bento.balanceOf(dai.address, alice.address)).gt(oldAliceDaiBalance);
     // });
-
     // it("Should swap some native tokens", async function () {
     //   let amountIn = BigNumber.from(10).pow(18);
     //   let expectedAmountOut = await pool.getAmountOut(encodedTokenAmount(weth, amountIn));
